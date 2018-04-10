@@ -1,0 +1,21 @@
+<nav class="navbar navbar-default menu-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand bomber-brand" href="/"><span class="fa f"></span>  </a>
+        </div>
+
+        <ul class="nav navbar-nav navbar-left">
+            
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <%if (session.type) {%>
+            <li><a href="/monCompte/<%=session.idUser%>"><p class="bomber-title-menu"><span class="fa fa-user-circle"></span> Mon compte</p></a></li>
+            <li><a href="/deconnexion"><p class="bomber-title-menu"><span class="fa fa-sign-out"></span> Déconnexion</p></a></li>
+            <%} else {%>
+            <li><a href="/inscription"><p class="bomber-title-menu"><span class="fa fa-pencil-square-o"></span> Inscription</p></a></li>
+            <li><a href="/connexion"><p class="bomber-title-menu"><span class="fa fa-sign-in"></span> Connexion</p></a></li>
+            <%}%>
+        </ul>
+    </div>
+</nav>
