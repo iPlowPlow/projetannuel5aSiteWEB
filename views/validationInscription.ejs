@@ -1,0 +1,25 @@
+<!-- views/signup.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Validation Inscription</title>
+    <% include ./partials/header %>
+</head>
+<body>
+<% include ./partials/navbar %>
+
+<div class="container">
+
+    <div class="col-sm-6 col-sm-offset-3">
+            <% if (msgError.length > 0) { %>
+            <div class="alert alert-danger"> <%= msgError %> </div>
+            <% } %>
+            <% if (msgSuccess.length > 0) { %>
+            <div class="alert alert-success"> <%= msgSuccess %> </div>
+            <% } %>      
+    </div>
+
+</div>
+<% include ./partials/footer %>
+</body>
+</html>
