@@ -1,0 +1,51 @@
+<!-- views/connexion.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Creation annonce</title>
+    <% include ./partials/header %>
+</head>
+<body>
+<% include ./partials/navbar %>
+<div class="container">
+    <div class="col-sm-6 col-sm-offset-3 ">
+        <h1><span class="fa fa-sign-in"></span> Créez votre annonce !</h1>
+
+        <!-- show any messages that come back when validating -->
+        <% if (msgError.length > 0) { %>
+        <div class="alert alert-danger"><%= msgError %></div>
+        <% } %>
+
+        <%if (typeof categories !== 'undefined' && typeof units !== 'undefined') { %>
+        <!-- LOGIN FORM -->
+        <form action="/annonceCreate" method="post">
+            <div class="form-group">
+                <label>Catégorie</label>
+                <select class="form-control" name="category">
+                <% categories.forEach(function (item) { %>
+                  <option value=<%= item.id%>><%= item.name%></option> 
+                <% }) %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Produit</label>
+                <input type="text" class="form-control" name="product">
+            </div>
+            <div class="form-group">
+                <label>Unité</label>
+                <select class="form-control" name="unit">
+                <% units.forEach(function (item) { %>
+                  <option value=<%= item.id%>><%= item.name%></option> 
+                <% }) %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-lg">Créer</button>
+        </form>
+        <% } %>
+    </div>
+</div>
+
+<% include ./partials/footer %>
+
+</body>
+</html>
