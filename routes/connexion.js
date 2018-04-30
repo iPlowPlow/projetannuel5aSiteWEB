@@ -61,7 +61,6 @@ module.exports = function(app, urlApi, utils){
                             if (body) {
                                 if (body.code == "0") {
                                     req.session.cookie.maxAge = 1000 * 60 * 60;
-                                    req.session.idUser = body.idUser;
                                     req.session.login = body.loginUser;
                                     req.session.type = body.typeUser;
                                     res.redirect("/");

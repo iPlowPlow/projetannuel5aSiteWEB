@@ -6,5 +6,6 @@ module.exports = function(app, urlApi, urlLocal, utils) {
 	require("./connexion")(app, urlApi, utils);
 	require("./validationInscription")(app, urlApi);
 	require("./deconnexion")(app);
+	require("./profil")(app, urlApi, urlLocal, utils);
    
 };

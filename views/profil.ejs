@@ -1,0 +1,66 @@
+<!-- views/gestionCompte.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Profil</title>
+    <% include ./partials/header %>
+</head>
+<body >
+<% include ./partials/navbar %>
+<div class="container">
+    <div class="col-sm-8 col-sm-offset-2 ">
+        <% if (msgError.length > 0) { %>
+            <div class="alert alert-danger"> <%= msgError %> </div>
+        <% } %>
+        <% if (msgSuccess.length > 0) { %>
+            <div class="alert alert-success"> <%= msgSuccess %> </div>
+        <% } %>
+    </div>
+    <div class="col-sm-8 col-sm-offset-2 ">
+          <h2>Mes informations : </h2>
+          <form action="/infoGeneral" method="post">
+           
+            <div class="form-group">
+                <label>Login</label>
+                <input type="text" class="form-control" name="username" value="<%= profil.loginUser%>" required disabled="disabled">
+            </div>
+            <div class="form-group">
+                <label>Mail</label><%= profil.mailUser %>
+                <input type="email" class="form-control" name="mail" value="<%= profil.emailUser %>" required>
+            </div>
+            <!--on garde en memoire les ancienne valeur pour ne pas devoir recharger a chaque fois le profil-->
+            <input type="hidden" value="<%= profil.emailUser %>" name="profilMail">
+            
+            <button type="submit" class="btn btn-lg bomber-btn">Modifier mes informations</button>
+        </form>
+
+    </div>
+    
+    <div class="col-sm-8 col-sm-offset-2 ">
+         <hr style="color:blue; border:1px solid blue;">
+        <h2>Modifier mon mot de passe</h2>
+        <form action="/modifierMdp" method="post">
+            <div class="form-group">
+                    <label>Ancien mot de passe</label>
+                    <input type="password" class="form-control" name="oldPassword" required>
+                </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <div class="form-group">
+                <label>Confirmer le mot de passe</label>
+                <input type="password" class="form-control" name="passwordConfirm" required>
+            </div>
+            <!--on garde en memoire les ancienne valeur pour ne pas devoir recharger a chaque fois le profil-->
+            <input type="hidden" value="<%= profil.emailUser %>" name="profilMail">
+            <button type="submit" class="btn btn-lg bomber-btn">Modifier mon mot de passe</button>
+            
+        </form>
+    </div>
+
+
+</div>
+<% include ./partials/footer %>
+</body>
+</html>

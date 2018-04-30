@@ -13,7 +13,6 @@ module.exports = function(app, urlApi,urlLocal,  utils){
     // =====================================
     // show the inscription form
     app.get("/inscription", function(req, res, next) {
-
         if(req.session.type && req.session.type != ""){
             res.redirect("/");
         }else {
