@@ -77,71 +77,56 @@ module.exports = function(app, urlApi,urlLocal,  utils){
 
 
                 rp({
-                    url: urlApi + "/user/findByLogin",
+                    url: urlApi + "/user/checkExist",
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     json: {
-                        "loginUser": req.body.username
+                        "loginUser": req.body.username,
+                        "emailUser": req.body.mail
                     }
-                }).then(function(body) {
+                }).then(function(body) { 
                     if(body.code == "0"){
-                        res.render("inscription.ejs", {
-                            msgError : "Cet Utilisateur existe déjà !",
-                            msgSuccess : "",
-                            session : req.session
-                        });
+
+                        if(body.emailUser == req.body.mail){
+                            res.render("inscription.ejs", {
+                                msgError : "Cet Email est déjà utilisé !",
+                                msgSuccess : "",
+                                session : req.session
+                            });
+                        }else{
+                            res.render("inscription.ejs", {
+                                msgError : "Cet identifiant est déjà utilisé !",
+                                msgSuccess : "",
+                                session : req.session
+                            });
+                        }
+                        
                     } else {
                         rp({
-                            url: urlApi + "/user/findByEmail",
-                            method: "GET",
+                            url: urlApi + "/user" ,
+                            method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             },
                             json: {
-                                "emailUser": req.body.mail
+                                "loginUser": req.body.username,
+                                "passwordUser" : bcrypt.hashSync(pwdSalty, null, null),
+                                "saltUser" : salt,
+                                "emailUser": req.body.mail,
+                                "validationCodeUser" : validationCodeUser
                             }
-                        }).then(function(body) { 
-                            if(body.code == "0"){
-                                res.render("inscription.ejs", {
-                                    msgError : "Cet Utilisateur existe déjà !",
-                                    msgSuccess : "",
-                                    session : req.session
-                                });
-                            } else {
-                                rp({
-                                    url: urlApi + "/user" ,
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    json: {
-                                        "loginUser": req.body.username,
-                                        "passwordUser" : bcrypt.hashSync(pwdSalty, null, null),
-                                        "saltUser" : salt,
-                                        "emailUser": req.body.mail,
-                                        "validationCodeUser" : validationCodeUser
-                                    }
-                                }).then(function(body){
-        
-                                    var ServiceMail = utils.ServiceMail;
-                                    var myMail = new ServiceMail();
-                                    myMail.sendMail(req.body.mail,"Validation Inscription", "Votre inscription à bien été prise en compte. Afin de valider votre inscription merci de suivre le lien suivant : " +urlLocal+"/validationInscription/" +validationCodeUser)
-                                    res.render("inscription.ejs", {
-                                        msgError:"",
-                                        msgSuccess: "Inscription validée !",
-                                        session : req.session
-                                    });
-                                }).catch(function (err) {
-                                    console.log(err);
-                                    res.render("inscription.ejs", {
-                                        msgError: "Erreur veuillez lors de l'inscription. Veuillez recommmencer !",
-                                        msgSuccess: "",
-                                        session : req.session
-                                    });
-                                });
-                            }
+                        }).then(function(body){
+
+                            var ServiceMail = utils.ServiceMail;
+                            var myMail = new ServiceMail();
+                            myMail.sendMail(req.body.mail,"Validation Inscription", "Votre inscription à bien été prise en compte. Afin de valider votre inscription merci de suivre le lien suivant : " +urlLocal+"/validationInscription/" +validationCodeUser)
+                            res.render("inscription.ejs", {
+                                msgError:"",
+                                msgSuccess: "Inscription validée !",
+                                session : req.session
+                            });
                         }).catch(function (err) {
                             console.log(err);
                             res.render("inscription.ejs", {
@@ -150,10 +135,19 @@ module.exports = function(app, urlApi,urlLocal,  utils){
                                 session : req.session
                             });
                         });
-                        
                     }
+                }).catch(function (err) {
+                    console.log(err);
+                    res.render("inscription.ejs", {
+                        msgError: "Erreur veuillez lors de l'inscription. Veuillez recommmencer !",
+                        msgSuccess: "",
+                        session : req.session
+                    });
                 });
+                
             }
+                
+            
         }
     });
 

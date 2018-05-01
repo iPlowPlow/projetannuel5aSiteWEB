@@ -63,6 +63,7 @@ module.exports = function(app, urlApi, utils){
                                     req.session.cookie.maxAge = 1000 * 60 * 60;
                                     req.session.login = body.loginUser;
                                     req.session.type = body.typeUser;
+                                    req.session.token = body.token;
                                     res.redirect("/");
                                 } else {
                                     res.render("connexion.ejs", { msgError: "Erreur combinaison login/mot de passe", session: req.session });

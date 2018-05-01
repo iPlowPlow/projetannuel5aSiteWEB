@@ -53,7 +53,8 @@ module.exports = function(app, urlApi, urlLocal, utils){
                     },
                     json: {
                         "loginUser" : req.session.login,
-                        "emailUser": req.body.mail
+                        "emailUser": req.body.mail,
+                        "token": req.session.token
                     }
                 }).then(function(body) {    
                     if(body.code ==0){
@@ -163,7 +164,8 @@ module.exports = function(app, urlApi, urlLocal, utils){
                             json: {
                                 "loginUser" : req.session.login,
                                 "passwordUser" : bcrypt.hashSync(pwdSalty, null, null),
-                                "saltUser" : salt
+                                "saltUser" : salt,
+                                "token": req.session.token
                             }
                         }).then(function(body) {    
                             if(body.code ==0){
@@ -297,7 +299,8 @@ module.exports = function(app, urlApi, urlLocal, utils){
                         "sexUser": req.body.sex,
                         "addressUser": req.body.address,
                         "cityUser": req.body.city,
-                        "cpUser": req.body.cp
+                        "cpUser": req.body.cp,
+                        "token": req.session.token
                     }
                 }).then(function(body) {    
                     if(body.code ==0){
