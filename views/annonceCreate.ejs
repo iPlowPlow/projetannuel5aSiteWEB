@@ -15,10 +15,13 @@
         <% if (msgError.length > 0) { %>
         <div class="alert alert-danger"><%= msgError %></div>
         <% } %>
+        <% if (msgSuccess.length > 0) { %>
+        <div class="alert alert-success"><%= msgSuccess %></div>
+        <% } %>
 
         <%if (typeof categories !== 'undefined' && typeof units !== 'undefined') { %>
         <!-- LOGIN FORM -->
-        <form action="/annonceCreate" method="post">
+        <form action="/annonce/new" method="post">
             <div class="form-group">
                 <label>Catégorie</label>
                 <select class="form-control" name="category">
@@ -29,7 +32,35 @@
             </div>
             <div class="form-group">
                 <label>Produit</label>
-                <input type="text" class="form-control" name="product">
+                <select name="product" class="form-control" >
+                  <option value="1">Select1</option>
+                  <option value="2">Select2</option>
+                  <option value="3">Select3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Nom</label>
+                <input type="text" class="form-control" name="name">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-control" name="description"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Localisation</label>
+                <input type="text" class="form-control" name="location">
+            </div>
+            <div class="form-group">
+                <label>Photo (URL)</label>
+                <input type="text" class="form-control" name="photo">
+            </div>
+            <div class="form-group">
+                <label>Prix (€)</label>
+                <input type='number' class="form-control" name="price" step='0.01' value='0.00' placeholder='0.00' />
+            </div>
+            <div class="form-group">
+                <label>Quantité disponible</label>
+                <input type='number' class="form-control" name="quantity" step='1' value='0' placeholder='0' />
             </div>
             <div class="form-group">
                 <label>Unité</label>
