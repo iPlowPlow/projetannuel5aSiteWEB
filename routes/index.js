@@ -9,5 +9,6 @@ module.exports = function(app, urlApi, urlLocal, utils) {
 	require("./validationInscription")(app, urlApi);
 	require("./deconnexion")(app);
 	require("./profil")(app, urlApi, urlLocal, utils);
+	require("./becomeProducer")(app, urlApi, utils);
    
 };

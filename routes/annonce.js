@@ -8,7 +8,7 @@ module.exports = function(app, urlApi){
 	// show the signup form
 	
 	app.get('/annonce/new', function(req, res, next) {
-		if(req.session.type && req.session.type == "productor") {
+		if(req.session.type && req.session.type == "producer") {
       var msgError="";
       var msgSuccess="";
       var categoriesList; 
