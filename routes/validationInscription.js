@@ -7,7 +7,7 @@ module.exports = function(app, urlApi){
 
     app.get("/validationInscription/:code", function(req, res) {
         
-        var code = req.params.code
+        var code = req.params.code;
         
         rp({
             url: urlApi + "/user/findForValidation",
@@ -26,7 +26,7 @@ module.exports = function(app, urlApi){
                     session : req.session
                 });
             }else{
-                console.log(body)
+                //console.log(body);
                 res.render("validationInscription.ejs", {
                     msgError: "Erreur veuillez lors de la validation. Veuillez recommmencer !",
                     msgSuccess: "",

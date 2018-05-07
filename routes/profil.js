@@ -35,7 +35,6 @@ module.exports = function(app, urlApi, urlLocal, utils){
 			res.redirect("/");
 		}else{
             var profil = getLocalProfil(req);
-
             if(!req.body.mail) {
                 res.render("profil.ejs", {
                     session: req.session,
@@ -78,7 +77,7 @@ module.exports = function(app, urlApi, urlLocal, utils){
                       
                     }
                 }).catch(function (err) {
-                    console.log(err)
+                    //console.log(err);
 
                     res.render("profil.ejs", {
                         session: req.session,
@@ -92,7 +91,7 @@ module.exports = function(app, urlApi, urlLocal, utils){
            
             
         }
-    })
+    });
 
 
 
@@ -108,7 +107,6 @@ module.exports = function(app, urlApi, urlLocal, utils){
                     session: req.session,
                     profil: profil,
                     msgError:"Veuillez saisir un mot de passe !", msgSuccess: "",
-                    session : req.session
                 });
             }else if(!req.body.passwordConfirm) {
                 res.render("profil.ejs", {
@@ -153,7 +151,7 @@ module.exports = function(app, urlApi, urlLocal, utils){
                             salt += ListeCar[Math.floor(Math.random()*ListeCar.length)];
                         }
         
-                        var pwdSalty = req.body.password + salt
+                        var pwdSalty = req.body.password + salt;
 
                         rp({
                             url: urlApi + "/user/update",
@@ -189,7 +187,7 @@ module.exports = function(app, urlApi, urlLocal, utils){
                               
                             }
                         }).catch(function (err) {
-                            console.log(err)
+                            //console.log(err);
         
                             res.render("profil.ejs", {
                                 session: req.session,
@@ -211,7 +209,7 @@ module.exports = function(app, urlApi, urlLocal, utils){
                     }
                     
                 }).catch(function (err) {
-                    console.log(err)
+                    //console.log(err);
                     res.render("profil.ejs", {
                         session: req.session,
                         profil: profil,
@@ -332,7 +330,7 @@ module.exports = function(app, urlApi, urlLocal, utils){
                       
                     }
                 }).catch(function (err) {
-                    console.log(err)
+                    //console.log(err);
 
                     res.render("profil.ejs", {
                         session: req.session,

@@ -72,13 +72,13 @@ module.exports = function(app, urlApi, utils){
                                 res.render("connexion.ejs", { msgError: "Erreur combinaison login/mot de passe", session: req.session });
                             }
                         }).catch(function (err) {
-                            console.log(err)
+                            //console.log(err);
                             res.render("connexion.ejs", { msgError: "Erreur inconnu. Merci de réesayer.", session: req.session });
                         });
 
                     }
                 }).catch(function (err) {
-                    console.log(err)
+                    //console.log(err);
                     res.render("connexion.ejs", { msgError: "Erreur inconnu. Merci de réesayer.", session: req.session });
                 });
                 

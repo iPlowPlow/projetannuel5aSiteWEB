@@ -33,16 +33,16 @@ module.exports = function(app, urlApi){
             if (body.code == 3) {
               res.render("annonceCreate.ejs", { msgError: body.message, msgSuccess:msgSuccess, session: req.session });
             } else {
-              categoriesList = JSON.parse(body)
+              categoriesList = JSON.parse(body);
               res.render('annonceCreate.ejs', { msgError: "", msgSuccess:msgSuccess, units: unitsList, categories: categoriesList, session : req.session });
             }
           }).catch(function (err) {
-            console.log(err)
+            //console.log(err);
             res.render("annonceCreate.ejs", { msgError: "Erreur inconnue. Merci de réessayer.", msgSuccess:msgSuccess, session: req.session });
           });
         }
       }).catch(function (err) {
-        console.log(err)
+        //console.log(err);
         res.render("annonceCreate.ejs", { msgError: "Erreur inconnue. Merci de réessayer.", msgSuccess:msgSuccess, session: req.session });
       });
 		}else{
