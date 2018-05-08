@@ -25,6 +25,7 @@ module.exports = function(app, urlApi, utils, config){
                     avatar = config.urlAvatarProducer +"/"+  req.params.id +"/"+ body.avatarProducer
                 }
                 
+                console.log(producer);
                 res.render("ficheProducer.ejs", {
                     session: req.session,
                     producer: producer,
