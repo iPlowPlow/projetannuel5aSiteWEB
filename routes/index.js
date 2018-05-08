@@ -1,4 +1,4 @@
-module.exports = function(app, urlApi, urlLocal, utils) {
+module.exports = function(app, urlApi, urlLocal, utils ,config) {
 
 	//FRONT
 	require("./accueil")(app, urlApi);
@@ -10,5 +10,6 @@ module.exports = function(app, urlApi, urlLocal, utils) {
 	require("./deconnexion")(app);
 	require("./profil")(app, urlApi, urlLocal, utils);
 	require("./becomeProducer")(app, urlApi, utils);
+	require("./ficheProducer")(app, urlApi, utils,config);
    
 };

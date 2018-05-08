@@ -32,8 +32,8 @@ module.exports = function(app, urlApi, utils){
                 var localProducer = getLocalProducer(fields);
                 var extensionT = files.avatar.name.split('.');
                 var extension = extensionT[extensionT.length-1];
-                
-                if( files.avatar.size> 5242880  ||  (extension != "jpg" && extension != "png" && extension != "jpeg" && extension != "gif" && extension != "bmp" && extension != "tif" && extension != "tiff")){
+
+                if(files.avatar.name !="" && ( files.avatar.size> 5242880  ||  (extension != "jpg" && extension != "png" && extension != "jpeg" && extension != "gif" && extension != "bmp" && extension != "tif" && extension != "tiff"))){
                     res.render("becomeProducer.ejs", {
                         session: req.session,
                         producer: localProducer,
@@ -103,11 +103,11 @@ module.exports = function(app, urlApi, utils){
                         msgError:"Veuillez saisir un code postal !",
                         msgSuccess: ""
                     });
-                }else if(!fields.description || fields.description.length<20) {
+                }else if(!fields.description || fields.description.length<20 || fields.description.length>500) {
                     res.render("becomeProducer.ejs", {
                         session: req.session,
                         producer: localProducer,
-                        msgError:"Veuillez saisir une description d'au moins 20 caractères  !",
+                        msgError:"Veuillez saisir une description ayant entre 20 et 500 caractères  !",
                         msgSuccess: ""
                     });
                 }else{  

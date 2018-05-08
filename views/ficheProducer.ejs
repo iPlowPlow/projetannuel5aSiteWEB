@@ -1,0 +1,38 @@
+<!-- views/becomeProducer.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Fiche producteur</title>
+    <% include ./partials/header %>
+</head>
+<body >
+<% include ./partials/navbar %>
+<div class="container">
+    <div class="col-sm-8 col-sm-offset-2 ">
+        <% if (msgError.length > 0) { %>
+            <div class="alert alert-danger"> <%= msgError %> </div>
+        <% } %>
+        <% if (msgSuccess.length > 0) { %>
+            <div class="alert alert-success"> <%= msgSuccess %> </div>
+        <% } %>
+    </div>
+</div>
+<% if (msgError != "Ce producteur n'existe pas !") { %>
+    <div class="container">
+            <div class="col-sm-8 col-sm-offset-2 ">
+                <img src="<%= avatar %>" style="max-width: 300px;">
+                star
+
+                <h4><%= producer.lastNameProducer %> <%= producer.firstNameProducer %></h4>
+            </div>
+            <div class="col-sm-8 col-sm-offset-2 ">
+                <h2>Description</h2>
+                <%= producer.descriptionProducer %>
+            </div>
+        </div>
+<% } %>
+
+
+<% include ./partials/footer %>
+</body>
+</html>

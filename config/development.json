@@ -1,0 +1,5 @@
+{
+  "development": {
+    "urlAvatarProducer" : "http://localhost:8888/producerAvatar"
+  }
+}
