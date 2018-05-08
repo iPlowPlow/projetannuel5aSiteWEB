@@ -25,8 +25,12 @@
         for(var i =0; i<nbComment; i++){
             totalStar+=producer.comment[i].starComment;
         }
+        if(nbComment>0){
+            var moyenne = ((totalStar/(nbComment*5))*5);
+        }else{
+            var moyenne = "Pas encore d'évaluation";
+        }
         
-        var moyenne = ((totalStar/(nbComment*5))*5);
     %>
     
     <div class="container">
