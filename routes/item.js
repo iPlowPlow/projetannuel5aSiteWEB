@@ -12,7 +12,7 @@ module.exports = function(app, urlApi, utils){
     var msgError;
     var unitsList;
     var categoriesList;
-		if(req.session.type && req.session.type == "productor") {
+		if(req.session.type && req.session.type == "producer") {
       msgError="";
       msgSuccess="";
       rp({
@@ -57,7 +57,7 @@ module.exports = function(app, urlApi, utils){
     var msgError;
     var unitsList;
     var categoriesList;
-    if(req.session.type && req.session.type == "productor") {
+    if(req.session.type && req.session.type == "producer") {
       msgError="";
       msgSuccess="";
       console.log("test");
