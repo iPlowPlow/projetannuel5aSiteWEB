@@ -57,6 +57,7 @@ module.exports = function(app, urlApi, utils){
     var msgError;
     var unitsList;
     var categoriesList;
+    
     if(req.session.type && req.session.type == "producer") {
       msgError="";
       msgSuccess="";
@@ -64,9 +65,10 @@ module.exports = function(app, urlApi, utils){
       var form = new formidable.IncomingForm();
       console.log("test");
       form.parse(req, function (err, fields, files) {
+        console.log(fields);
         var extensionT = files.photo.name.split('.');
         var extension = extensionT[extensionT.length-1];
-        if (files.photo.size > 5242880 || (extension != "jpg" && extension != "png" && extension != "jpeg" && extension != "gif" && extension != "bmp" && extension != "tif" && extension != "tiff")) {
+        if (files.photo.name !="" && (files.photo.size > 5242880 || (extension != "jpg" && extension != "png" && extension != "jpeg" && extension != "gif" && extension != "bmp" && extension != "tif" && extension != "tiff"))) {
           msgError += "Le fichier utilisé pour la photo n'est pas conforme : <br>Extensions acceptées :  \n\rPoid maximum : 5242880  ";
         }
         if(!fields.name){

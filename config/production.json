@@ -1,5 +1,6 @@
 {
   "production": {
-    "urlAvatarProducer" : "http://localhost:8888/producerAvatar"
+    "urlAvatarProducer" : "http://localhost:8888/producerAvatar",
+    "urlItemPhoto" : "http://localhost:8888/itemPhotos"
   }
 }

@@ -2,7 +2,7 @@ module.exports = function(app, urlApi, urlLocal, utils ,config) {
 
 	//FRONT
 	require("./accueil")(app, urlApi);
-	require("./visualisationAnnonce")(app, urlApi);
+	require("./visualisationAnnonce")(app, urlApi, utils, config);
 	require("./item")(app, urlApi, utils);
 	require("./inscription")(app, urlApi, urlLocal, utils);
 	require("./connexion")(app, urlApi, utils);
