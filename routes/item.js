@@ -57,15 +57,14 @@ module.exports = function(app, urlApi, utils){
     var msgError;
     var unitsList;
     var categoriesList;
-    
     if(req.session.type && req.session.type == "producer") {
       msgError="";
       msgSuccess="";
       var form = new formidable.IncomingForm();
       form.multiples=true;
       form.parse(req, function (err, fields, files) {
+        console.log(files.photo[0]);
         for(var photo in files.photo){
-          console.log(files.photo[photo]);
           var extensionT = files.photo[photo].name.split('.');
           var extension = extensionT[extensionT.length-1];
           if (files.photo[photo].size > 5242880 || (extension != "jpg" && extension != "png" && extension != "jpeg" && extension != "gif" && extension != "bmp" && extension != "tif" && extension != "tiff")) {
