@@ -71,7 +71,7 @@ module.exports = function(app, urlApi,urlLocal,  utils){
                     validationCodeUser += ListeCar[Math.floor(Math.random()*ListeCar.length)];
                 }
 
-                var pwdSalty = req.body.password + salt
+                var pwdSalty = req.body.password + salt;
                 
 
                 //On vérifie si doublon login ou mail
@@ -128,7 +128,7 @@ module.exports = function(app, urlApi,urlLocal,  utils){
         
                                     var ServiceMail = utils.ServiceMail;
                                     var myMail = new ServiceMail();
-                                    myMail.sendMail(req.body.mail,"Validation Inscription", "Votre inscription à bien été prise en compte. Afin de valider votre inscription merci de suivre le lien suivant : " +urlLocal+"/validationInscription/" +validationCodeUser)
+                                    myMail.sendMail(req.body.mail,"Validation Inscription", "Votre inscription à bien été prise en compte. Afin de valider votre inscription merci de suivre le lien suivant : " +urlLocal+"/validationInscription/" +validationCodeUser);
                                     res.render("inscription.ejs", {
                                         msgError:"",
                                         msgSuccess: "Inscription validée !",
