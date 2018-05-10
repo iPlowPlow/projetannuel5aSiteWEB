@@ -26,6 +26,7 @@ module.exports = function(app, urlApi){
                     session : req.session
                 });
             }else{
+                //console.log(body);
                 res.render("validationInscription.ejs", {
                     msgError: "Erreur veuillez lors de la validation. Veuillez recommmencer !",
                     msgSuccess: "",

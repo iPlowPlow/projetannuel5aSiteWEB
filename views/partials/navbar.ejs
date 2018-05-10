@@ -10,7 +10,8 @@
 
         <ul class="nav navbar-nav navbar-right">
             <%if (session.type) {%>
-            <li><a href="/monCompte/<%=session.idUser%>"><p class="bomber-title-menu"><span class="fa fa-user-circle"></span> Mon compte</p></a></li>
+
+            <li><a href="/profil"><p class="bomber-title-menu"><span class="fa fa-user-circle"></span> Mon compte</p></a></li>
             <%if (session.type=="productor") {%>
             <li><a href="/item/new"><p class="bomber-title-menu"><span class="fa fa-rocket"></span> Déposer une annonce</p></a></li>
             <%}%>
