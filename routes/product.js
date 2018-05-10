@@ -24,7 +24,7 @@ module.exports = function(app, urlApi){
 					res.send(null);
 				}
 			}).catch(function (err) {
-				console.log(err)
+				console.log(err);
 				res.send(null);
 			});
 		}else res.send(null);

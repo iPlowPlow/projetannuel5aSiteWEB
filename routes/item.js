@@ -36,16 +36,16 @@ module.exports = function(app, urlApi, utils){
             if (body.code == 3) {
               res.render("itemCreate.ejs", { msgError: body.message, msgSuccess:msgSuccess, session: req.session });
             } else {
-              categoriesList = JSON.parse(body)
+              categoriesList = JSON.parse(body);
               res.render('itemCreate.ejs', { msgError: "", msgSuccess:msgSuccess, units: unitsList, categories: categoriesList, session : req.session });
             }
           }).catch(function (err) {
-            console.log(err)
+            console.log(err);
             res.render("itemCreate.ejs", { msgError: "Erreur inconnue. Merci de réessayer.", msgSuccess:msgSuccess, session: req.session });
           });
         }
       }).catch(function (err) {
-        console.log(err)
+        console.log(err);
         res.render("itemCreate.ejs", { msgError: "Erreur inconnue. Merci de réessayer.", msgSuccess:msgSuccess, session: req.session });
       });
 		}else{
@@ -61,15 +61,16 @@ module.exports = function(app, urlApi, utils){
     if(req.session.type && req.session.type == "producer") {
       msgError="";
       msgSuccess="";
-      console.log("test");
       var form = new formidable.IncomingForm();
-      console.log("test");
+      form.multiples=true;
       form.parse(req, function (err, fields, files) {
-        console.log(fields);
-        var extensionT = files.photo.name.split('.');
-        var extension = extensionT[extensionT.length-1];
-        if (files.photo.name !="" && (files.photo.size > 5242880 || (extension != "jpg" && extension != "png" && extension != "jpeg" && extension != "gif" && extension != "bmp" && extension != "tif" && extension != "tiff"))) {
-          msgError += "Le fichier utilisé pour la photo n'est pas conforme : <br>Extensions acceptées :  \n\rPoid maximum : 5242880  ";
+        for(var photo in files.photo){
+          console.log(files.photo[photo]);
+          var extensionT = files.photo[photo].name.split('.');
+          var extension = extensionT[extensionT.length-1];
+          if (files.photo[photo].size > 5242880 || (extension != "jpg" && extension != "png" && extension != "jpeg" && extension != "gif" && extension != "bmp" && extension != "tif" && extension != "tiff")) {
+            msgError += "L'un des fichiers utilisés pour les photos n'est pas conforme : <br>Extensions acceptées :  \n\rPoid maximum : 5242880  ";
+          }
         }
         if(!fields.name){
           msgError += "\n Veuillez saisir le nom de votre produit ! ";
