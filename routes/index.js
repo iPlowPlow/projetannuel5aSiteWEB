@@ -4,6 +4,7 @@ module.exports = function(app, urlApi, urlLocal, utils ,config) {
 	require("./accueil")(app, urlApi);
 	require("./visualisationAnnonce")(app, urlApi, utils, config);
 	require("./item")(app, urlApi, utils);
+	require("./itemList")(app, urlApi, utils);
 	require("./inscription")(app, urlApi, urlLocal, utils);
 	require("./connexion")(app, urlApi, utils);
 	require("./validationInscription")(app, urlApi);

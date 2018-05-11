@@ -7,12 +7,15 @@
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&key=AIzaSyBm8DYeq7M1jOwLccw1_5idQoXpGcUd0uM&libraries=places"></script>
     <script type="text/javascript">
             $(document).ready(function () {
-                var autocomplete = new google.maps.places.Autocomplete($("#adress")[0], {});
-
+                var options = {
+                    componentRestrictions: {country: 'fr'}
+                };
+                var autocomplete = new google.maps.places.Autocomplete($("#adress")[0], options);
+                
                 google.maps.event.addListener(autocomplete, 'place_changed', function () {
                     var place = autocomplete.getPlace();
                     selectAdress(place.geometry.location.lat(), place.geometry.location.lng(), 15, true);
-                    //console.log(place.address_components);
+                    $("#city").val(place.vicinity);
                 });
                 selectAdress(47.930565, 2.436864, 5, false);
                 loadProducts(1);
