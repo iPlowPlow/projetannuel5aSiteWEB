@@ -1,0 +1,155 @@
+<!-- views/connexion.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Liste annonces</title>
+    <% include ./partials/header %>
+    <link rel="stylesheet" href="/css/slider.css">
+    <script src="/js/bootstrap-slider.js"></script>
+    <script type="text/javascript">
+      var products = JSON.parse('<%- JSON.stringify(products) %>');
+
+      $(document).ready(function () {
+        $("#listItems").collapse("show");
+        $("#filter").collapse();
+        $("#price").slider({});
+        $("#quantity").slider({});
+        $('.slider-horizontal').css({'width': '100%', 'height':'30px'});
+        $("#category").change(function () {
+          var id = $(this).children(":selected")[0].attributes.value.nodeValue;
+          loadProducts(id);
+        });
+      });
+      function filter(){
+        var categoryId = $("#category").children(":selected")[0].attributes.value.nodeValue;
+        var productId = $("#product").children(":selected")[0].attributes.value.nodeValue;
+        var city = $( "#cities option:selected" ).text()
+        var producerId = $("#producers").children(":selected")[0].attributes.value.nodeValue;
+        var price = $("#price").data('slider').getValue();
+        var priceMin = price[0];
+        var priceMax = price[1];
+        var remainingQuantity = $("#quantity").data('slider').getValue()-1;
+        $.getJSON("/itemList/filter", { categoryId: categoryId, productId: productId, city: city, producerId: producerId,
+        priceMin: priceMin, priceMax: priceMax, remainingQuantity: remainingQuantity}).done(function( json ) {
+          if(json.msgError == ""){
+            $("#tabdata").find('tbody').empty().append(json.listTab);
+          }else{
+            alert(json.msgError);
+          }
+          console.log(json);
+        });
+      }
+
+      function loadProducts(id){
+        $('#product').empty();
+        $('#product').append($('<option>', {
+          value: 0,
+          text: "Pas de filtrage"
+        }));
+        for(var elem in products) {
+          if(products[elem].idCat == id){
+            $('#product').append($('<option>', {
+              value: products[elem].id,
+              text: products[elem].name
+            }));
+          }
+        }
+      }
+    </script>
+</head>
+<body>
+<% include ./partials/navbar %>
+<div class="container">
+  <div class="col-sm-12 col-sm-offset-0 ">
+    <h1>
+      <center><span class="	fa fa-eye"></span> Liste des annonces</center>
+    </h1>
+    <% if (msgError.length > 0) { %>
+    <div class="alert alert-danger">
+      <%= msgError %>
+    </div>
+    <% } else { %>
+    <div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#filter">
+        Filtrer</a>
+      </h4>
+    </div>
+    <div id="filter" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <div class="form-group">
+          <div class="col-sm-3 col-sm-offset-0 ">
+            <label>Catégorie</label>
+              <select class="form-control" id="category" name="category">
+                <option value=0><b>Pas de filtrage</b></option> 
+                <% categories.forEach(function (item) { %>
+                <option value=<%= item.id%>><%= item.name%></option> 
+                <% }) %>
+              </select>
+            <label>Produit</label>
+              <select name="product" id="product" class="form-control" >
+                <option value=0><b>Pas de filtrage</b></option> 
+              </select>
+          </div>
+          <div class="col-sm-3 col-sm-offset-1 ">
+            <label>Ville</label>
+              <select class="form-control" id="cities" name="cities">
+                <option value=0><b>Pas de filtrage</b></option> 
+                <% cities.forEach(function (item) { %>
+                <option value=<%= item %>><%= item %></option> 
+                <% }) %>
+              </select>
+            <label>Producteurs</label>
+              <select class="form-control" id="producers" name="producers">
+                <option value=0><b>Pas de filtrage</b></option> 
+                <% producers.forEach(function (item) { %>
+                <option value=<%= item.id%>><%= item.name%></option> 
+                <% }) %>
+              </select>              
+              <hr>
+              <center><button class="btn btn-primary" onClick="filter();" style="width:100%">Filtrer</button></center>
+          </div>
+          <div class="col-sm-3 col-sm-offset-1 ">
+              <label>Prix</label><br/>
+              <input id="price" type="text" class="span2" value="" data-slider-min=<%= prixMin %> data-slider-max=<%= prixMax %> data-slider-step="1" data-slider-value="[<%= prixMax*0.25 %>,<%= prixMax*0.75 %>]"/>
+              <label>Minimum restant</label><br/>
+              <input id="quantity" type="text" class="span2" value="" data-slider-min=1 data-slider-max=100 data-slider-step="1" data-slider-value="10"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#listItems">
+        Liste items</a>
+      </h4>
+    </div>
+    <div id="listItems" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table id="tabdata" name="tabdata" class="table">
+            <thead>
+              <tr>
+              </tr>
+             </thead>
+              <tbody>
+                <%- listTab %>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <% } %>
+  </div>
+</div>
+
+<% include ./partials/footer %>
+
+</body>
+</html>

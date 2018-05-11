@@ -63,10 +63,14 @@ module.exports = function(app, urlApi, utils){
       var form = new formidable.IncomingForm();
       form.multiples=true;
       form.parse(req, function (err, fields, files) {
-        console.log(files.photo[0]);
-        for(var photo in files.photo){
+        if(!Array.isArray(files.photo)){
+          var arr = [];
+          arr.push(files.photo);
+          files.photo = arr;
+        }
+        for (var photo in files.photo) {
           var extensionT = files.photo[photo].name.split('.');
-          var extension = extensionT[extensionT.length-1];
+          var extension = extensionT[extensionT.length - 1];
           if (files.photo[photo].size > 5242880 || (extension != "jpg" && extension != "png" && extension != "jpeg" && extension != "gif" && extension != "bmp" && extension != "tif" && extension != "tiff")) {
             msgError += "L'un des fichiers utilisés pour les photos n'est pas conforme : <br>Extensions acceptées :  \n\rPoid maximum : 5242880  ";
           }
@@ -96,6 +100,7 @@ module.exports = function(app, urlApi, utils){
               "description": fields.description,
               "adress": fields.adress,
               "location": fields.location,
+              "city": fields.city,
               "photo": files.photo,
               "price": fields.price,
               "unitId": fields.unit,
