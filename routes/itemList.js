@@ -14,6 +14,8 @@ module.exports = function(app, urlApi, utils){
     var producers = [];
     var cities = [];
     var listTab = "";
+    var prixMax=0.0;
+    var prixMin=Number.MAX_SAFE_INTEGER+0.1;
     if(req.session.type){
       rp({
         uri: urlApi + "/item/filter",
@@ -28,36 +30,99 @@ module.exports = function(app, urlApi, utils){
       }).then(function (body) {
         if (body.code == 0) {
           for (var item in body.list) {
-            if(!cities.includes(body.list[item].city)){
-              cities.push(body.list[item].cities);
+            if(prixMax < body.list[item].price){
+              prixMax = body.list[item].price;
             }
-            if(!producers.includes({id:body.list[item].idProducer, name:body.list[item].producerFirstName+" "+body.list[item].producerName})){
+            if(prixMin > body.list[item].price){
+              prixMin = body.list[item].price;
+            }
+            if(!cities.includes(body.list[item].city)){
+              cities.push(body.list[item].city);
+            }
+            if(producers.filter(producers => (producers.id === body.list[item].idProducer)).length===0){
               producers.push({id:body.list[item].idProducer, name:body.list[item].producerFirstName+" "+body.list[item].producerName});
             }
-            if(!categories.includes({id:body.list[item].categId, name:body.list[item].categoryName})){
+            if(categories.filter(categories => (categories.id === body.list[item].categId)).length===0){
               categories.push({id:body.list[item].categId, name:body.list[item].categoryName});
             }
-            if(!products.includes({id:body.list[item].productId, name:body.list[item].productName, idCat:body.list[item].categId, nameCat:body.list[item].categoryName})){
+            if(products.filter(products => (products.id === body.list[item].productId)).length===0){
               products.push({id:body.list[item].productId, name:body.list[item].productName, idCat:body.list[item].categId, nameCat:body.list[item].categoryName});
             }
             listTab += "<tr>"
-              +"<td><a href='https://www.w3schools.com'><img src='http://localhost:8888/itemPhotos/5/0.jpg' width='150' height='150'></a></td>"
-              +"<td style='text-align:center;vertical-align:middle'><a href='https://www.w3schools.com'><h3>"+body.list[item].itemName+"</h3></a></td>"
+              +"<td><a href='/visualisationAnnonce/"+body.list[item].id+"'><img src='http://localhost:8888/itemPhotos/"+body.list[item].id+"/0."+body.list[item].fileExtensions.split(';')[0]+"' width='150' height='150'></a></td>"
+              +"<td style='text-align:center;vertical-align:middle'><a href='/visualisationAnnonce/"+body.list[item].id+"'><h3>"+body.list[item].itemName+"</h3></a></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].description+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].productName+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].producerFirstName+" "+body.list[item].producerName+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].city+"</h5></td>"
-              +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].quantity+" "+ body.list[item].unitName+" disponibles</h5></td>"
+              +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].quantity+" "+ body.list[item].unitName+"s disponibles</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h3>"+body.list[item].price+"€/"+body.list[item].unitName+"</h3></td>"
             +"</tr>"
           }
-          res.render('itemList.ejs', { msgError: "", categories: categories, products: products, producers: producers, cities: cities, listTab: listTab, session : req.session });
+          res.render('itemList.ejs', { msgError: "", categories: categories, products: products, producers: producers, cities: cities, listTab: listTab, prixMin: prixMin, prixMax: prixMax, session : req.session });
         } else {
           res.render("itemList.ejs", { msgError: body.message, session: req.session });
         }
       });
     }else{
 			res.redirect("/");
+		}
+  });
+
+  app.get('/itemList/filter', function(req, res, next) {
+    var msgError = "";
+    var listTab = "";
+    if(req.query.city == "Pas de filtrage"){
+      req.query.city = null;
+    }
+    if(req.query.categoryId==0){
+      req.query.categoryId = null;
+    }
+    if(req.query.productId==0){
+      req.query.productId = null;
+    }
+    if(req.query.producerId==0){
+      req.query.producerId = null;
+    }
+    if(req.session.type){
+      rp({
+        uri: urlApi + "/item/filter",
+        method: "GET",
+        json: true,
+        headers: {
+          'User-Agent': 'Request-Promise'
+        },
+        qs: {
+          remainingQuantity: req.query.remainingQuantity,
+          priceMin: req.query.priceMin,
+          priceMax: req.query.priceMax,
+          categoryId: req.query.categoryId,
+          productId: req.query.productId,
+          producerId: req.query.producerId,
+          city: req.query.city,
+          limit: '150'
+        }
+      }).then(function (body) {
+        if (body.code == 0) {
+          for (var item in body.list) {
+            listTab += "<tr>"
+              +"<td><a href='/visualisationAnnonce/"+body.list[item].id+"'><img src='http://localhost:8888/itemPhotos/"+body.list[item].id+"/0."+body.list[item].fileExtensions.split(';')[0]+"' width='150' height='150'></a></td>"
+              +"<td style='text-align:center;vertical-align:middle'><a href='/visualisationAnnonce/"+body.list[item].id+"'><h3>"+body.list[item].itemName+"</h3></a></td>"
+              +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].description+"</h5></td>"
+              +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].productName+"</h5></td>"
+              +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].producerFirstName+" "+body.list[item].producerName+"</h5></td>"
+              +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].city+"</h5></td>"
+              +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].quantity+" "+ body.list[item].unitName+"s disponibles</h5></td>"
+              +"<td style='text-align:center;vertical-align:middle'><h3>"+body.list[item].price+"€/"+body.list[item].unitName+"</h3></td>"
+            +"</tr>"
+          }
+          res.send({ msgError: "", listTab: listTab});
+        } else {
+          res.send({ msgError: "erreur lors de la requête AJAX"});
+        }
+      });
+    }else{
+			res.send({ msgError: "erreur lors de la requête AJAX"});
 		}
   });
 };
