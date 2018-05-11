@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Annonce</title>
+    <% include ./partials/header %>
+</head>
+<body>
+
+<% include ./partials/navbar %>
+
+
+<div class="container">
+    <div class="col-sm-8 col-sm-offset-2 ">
+
+        <% if(cart.length == 0){ %>
+            <h2>Pas d'article dans votre panier ! </h2>
+        <% }else{ 
+            for (var i =0; i<cart.length; i++) { %>
+
+                <div class="row">
+                        <div class="col-md-8">
+                             <h3><%= cart[i].title %></h3><br />
+                             <b>Catégorie :</b> <%= cart[i].category %> &nbsp;&nbsp;&nbsp;
+                             <b>Appellation :</b> <%= cart[i].product %> &nbsp;&nbsp;&nbsp;
+                             <b>Quantité :</b> <%= cart[i].qte %> <%= cart[i].unit %>(s)  &nbsp;&nbsp;&nbsp;
+                        </div>
+                        <div class="col-sm-3"><button> Supp</button></div>  
+                </div>
+
+            <% }
+        } %>
+
+    </div>
+</div>
+
+
+<% include ./partials/footer %>
+
+</body>
+</html>

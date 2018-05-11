@@ -9,42 +9,8 @@
 <% include ./partials/navbar %>
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&key=AIzaSyBm8DYeq7M1jOwLccw1_5idQoXpGcUd0uM&libraries=places"></script>
-<script type="text/javascript">
-  $(document).ready(function () {
-    /*var autocomplete = new google.maps.places.Autocomplete($("#adress")[0], {});
-    google.maps.event.addListener(autocomplete, 'place_changed', function () {
-        var place = autocomplete.getPlace();
-        selectAdress(place.geometry.location.lat(), place.geometry.location.lng(), 15, true);
-        //console.log(place.address_components);
-    });*/
-    
 
-    selectAdress(<%=lat%>, <%=long%>, 15, true);
 
-    function selectAdress(lat, long, zoom, marker){
-        var latlng = new google.maps.LatLng(lat, long)
-        
-        var myOptions = {
-            center: latlng,
-            zoom: zoom,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map"),
-            myOptions);
-        if(marker){
-            var marker = new google.maps.Marker({
-                position: latlng,
-                map: map,
-                title: "<%= item.infoItem.address %>"
-            });
-            $("#location").val(lat + ','+ long);
-        }
-        
-    }
-
-})
-</script>
-<%=lat%>
 <style>
     /* Style the Image Used to Trigger the Modal */
     #myImg {
@@ -139,6 +105,42 @@
 </div>
 <% if (msgError != "Cette annonce n'existe pas") { %>
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+          /*var autocomplete = new google.maps.places.Autocomplete($("#adress")[0], {});
+          google.maps.event.addListener(autocomplete, 'place_changed', function () {
+              var place = autocomplete.getPlace();
+              selectAdress(place.geometry.location.lat(), place.geometry.location.lng(), 15, true);
+              //console.log(place.address_components);
+          });*/
+          
+      
+          selectAdress(<%=lat%>, <%=long%>, 15, true);
+      
+          function selectAdress(lat, long, zoom, marker){
+              var latlng = new google.maps.LatLng(lat, long)
+              
+              var myOptions = {
+                  center: latlng,
+                  zoom: zoom,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+              };
+              var map = new google.maps.Map(document.getElementById("map"),
+                  myOptions);
+              if(marker){
+                  var marker = new google.maps.Marker({
+                      position: latlng,
+                      map: map,
+                      title: "<%= item.infoItem.address %>"
+                  });
+                  $("#location").val(lat + ','+ long);
+              }
+              
+          }
+      
+      })
+      </script>
+
     <% 
         var nbComment = item.stars.length;
         var totalStar = 0;
@@ -191,6 +193,47 @@
                 <div id="map" class="form-control"style="height:500px;"></div>
                 <input type="hidden" class="form-control" id="location" name="location">
             </div>
+            <div>
+                <h2>Ajouter au panier : </h2>
+                <% if(!session.type) { %>
+                    <a href ="/connexion" >Pour ajouter au panier merci de vous connecter en cliquant ici.</a>
+                <% }else{ %>
+
+                    <script type="text/javascript">
+                    
+                        function addCart(){
+                            var qte=document.getElementById("qteCart").value;
+                            if(qte<1 || qte > <%= item.infoItem.quantity %>) {
+                                alert("La quantité voulu doit être suppérieur à 0 et inférieur à <%= item.infoItem.quantity %>");
+                            }else{
+                                var url = document.URL.split('/');
+                                var id = url[url.length-1];
+                                /*on envoi aussi la qtemax possible à  l'achat dans le cas ou produit déjà dans panier pour vérif*/
+                                $.getJSON("/cart/add", { id: id, qte:qte, qteMax : <%= item.infoItem.quantity %>, unit : "<%= item.infoItem.unitName %>", category : "<%=item.infoItem.categoryName%>", product: "<%=item.infoItem.productName%>", title:"<%=item.infoItem.itemName%>" }).done(function( json ) {
+                                    if(json.code == 0){
+                                        // on mettera un modal plus tard pour faire beau
+                                        alert("Vous avez ajouté au panier vos bails")
+                                    }else{
+                                        alert(json.message)
+                                    }
+                                });
+                            }
+                        }
+                    
+                    </script>
+                    <% if(session.login != item.infoItem.loginUser) { %>
+                        <select name="qteCart" id="qteCart">
+                            <% for(var j = 1; j<=item.infoItem.quantity; j++) { %> 
+                                <option  name="qteCart" value ="<%=j%>" id="qteCart"><%=j%></option>
+                            <% } %>                       
+                        </select> <%=item.infoItem.unitName%>(s) <input type="button" value="Ajouter" onclick="addCart();">
+                    <% } else { %> 
+                        <div>C'est votre annonce vous ne pouvez pas l'ajouter à votre panier !</div>   
+                    <% } %>
+                    
+                <% } %>
+            </div>
+           
 
         </div>
     </div>

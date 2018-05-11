@@ -10,8 +10,9 @@ module.exports = function(app, urlApi, urlLocal, utils ,config) {
 	require("./deconnexion")(app);
 	require("./profil")(app, urlApi, urlLocal, utils);
 	require("./becomeProducer")(app, urlApi, utils);
-	require("./ficheProducer")(app, urlApi, utils,config);
+	require("./ficheProducer")(app, urlApi, utils, config);
 	require("./product")(app, urlApi);
+	require("./cart")(app, urlApi, utils, config);
 
    
 };

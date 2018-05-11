@@ -7,6 +7,7 @@ module.exports = function(app, urlApi, utils, config){
         var item;
         var lat;
         var long;
+        
         rp({
             url: urlApi + "/item",
             method: "GET",
