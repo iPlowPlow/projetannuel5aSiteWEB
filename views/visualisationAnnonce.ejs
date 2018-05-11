@@ -181,6 +181,7 @@
                 <b>Catégorie :</b> <%= item.infoItem.categoryName %><br>
                 <b>Appellation :</b> <%= item.infoItem.productName %><br>
                 <b>Quantité disponible :</b> <%= item.infoItem.quantity %> <%= item.infoItem.unitName %>(s) <br>
+                <b>Prix unitaire :</b> <%= item.infoItem.price %> €
             </div>
             
             <div>
@@ -198,9 +199,7 @@
                 <% if(!session.type) { %>
                     <a href ="/connexion" >Pour ajouter au panier merci de vous connecter en cliquant ici.</a>
                 <% }else{ %>
-
                     <script type="text/javascript">
-                    
                         function addCart(){
                             var qte=document.getElementById("qteCart").value;
                             if(qte<1 || qte > <%= item.infoItem.quantity %>) {
@@ -209,7 +208,7 @@
                                 var url = document.URL.split('/');
                                 var id = url[url.length-1];
                                 /*on envoi aussi la qtemax possible à  l'achat dans le cas ou produit déjà dans panier pour vérif*/
-                                $.getJSON("/cart/add", { id: id, qte:qte, qteMax : <%= item.infoItem.quantity %>, unit : "<%= item.infoItem.unitName %>", category : "<%=item.infoItem.categoryName%>", product: "<%=item.infoItem.productName%>", title:"<%=item.infoItem.itemName%>" }).done(function( json ) {
+                                $.getJSON("/cart/add", { id: id, qte:qte, qteMax : <%= item.infoItem.quantity %>, unit : "<%= item.infoItem.unitName %>", category : "<%=item.infoItem.categoryName%>", product: "<%=item.infoItem.productName%>", title:"<%=item.infoItem.itemName%>", prixU : <%=item.infoItem.price%> }).done(function( json ) {
                                     if(json.code == 0){
                                         // on mettera un modal plus tard pour faire beau
                                         alert("Vous avez ajouté au panier vos bails")
