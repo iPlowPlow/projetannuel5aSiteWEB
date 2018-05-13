@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">    
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ 
+  <title>PayPal Node App</title>
+</head>
+<body>
+ <!-- <h1>Boston Red Sox Hat</h1>
+  <h2>Buy For $25</h2>
+  <form action="/pay" method="post">
+    <input type="submit" value="Buy">
+  </form>-->
+
+
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+  <div id="paypal-button-container"></div>
+  
+  <script>
+  
+      // Render the PayPal button
+  
+      paypal.Button.render({
+  
+          // Set your environment
+  
+          env: 'sandbox', // sandbox | production
+  
+          // Specify the style of the button
+  
+          style: {
+              label: 'buynow',
+              fundingicons: true, // optional
+              branding: true, // optional
+              size:  'small', // small | medium | large | responsive
+              shape: 'rect',   // pill | rect
+              color: 'gold'   // gold | blue | silve | black
+          },
+  
+          // PayPal Client IDs - replace with your own
+          // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+  
+          client: {
+            sandbox:    'AZea9NJGh3NPC-Agf3lJAte_9paoZN9xZSvq4DkjcLf3eL6TvEpaWRISsrSMoJxUx6uXsgMf89ZE75tu',
+            production: 'AU6ED0SosAE4xYm2nZfq5q1SBZ5C5ddyobUtZRaFFSqM2M4Ya4L-aatJVDNK3n_x2pBJfyjlQQBkZHwD'
+        },
+  
+          // Wait for the PayPal button to be clicked
+  
+          payment: function(data, actions) {
+              return actions.payment.create({
+                  transactions: [
+                      {
+                          amount: { total: '0.01', currency: 'USD' }
+                      }
+                  ]
+              });
+          },
+  
+          // Wait for the payment to be authorized by the customer
+  
+          onAuthorize: function(data, actions) {
+              return actions.payment.execute().then(function() {
+                  window.alert('Payment Complete!');
+              });
+          }
+  
+      }, '#paypal-button-container');
+  
+  </script>
+      
+
+</body>
+</html>
