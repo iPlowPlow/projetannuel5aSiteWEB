@@ -12,7 +12,7 @@ module.exports = function(app, urlApi, utils){
     var msgError;
     var unitsList;
     var categoriesList;
-		if(req.session.type && req.session.type == "producer") {
+		if(req.session.type && req.session.type == 1) {
       msgError="";
       msgSuccess="";
       rp({
@@ -57,7 +57,7 @@ module.exports = function(app, urlApi, utils){
     var msgError;
     var unitsList;
     var categoriesList;
-    if(req.session.type && req.session.type == "producer") {
+    if(req.session.type && req.session.type == 1) {
       msgError="";
       msgSuccess="";
       var form = new formidable.IncomingForm();
@@ -88,6 +88,7 @@ module.exports = function(app, urlApi, utils){
         if(msgError != ""){
           res.render('itemCreate.ejs', {msgError:msgError, msgSuccess:msgSuccess, session : req.session});
         }else{
+
           rp({
             url: urlApi + "/item",
             method: "POST",
@@ -105,7 +106,7 @@ module.exports = function(app, urlApi, utils){
               "price": fields.price,
               "unitId": fields.unit,
               "quantity": fields.quantity,
-              "userId": req.session.idUser
+              "token": req.session.token
             }
         }).then(function (body) {
           if (body) {
