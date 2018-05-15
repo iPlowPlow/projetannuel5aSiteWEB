@@ -134,11 +134,12 @@ module.exports = function(app, urlApi, utils){
                         }
                     }).then(function(body) {   
                         if(body.code == 0){
-                            res.render("becomeProducer.ejs", {
+                            req.session.type="producer";
+                            res.render("ficheProducer.ejs", {
                                 session: req.session,
                                 producer: localProducer,
                                 msgError:"",
-                                msgSuccess: "Succes !"
+                                msgSuccess: "Vous êtes désormais enregistré en temps que producteur ! Vous trouverez ci-dessous votre fiche personnel. Un nouvel onglet a également été ajouté pour vous permettre de gérer vos ventes."
                             });
                         }else{
                             console.log(body);

@@ -30,7 +30,7 @@ module.exports = function(app, urlApi, urlLocal, utils){
     });
 
 
-    app.post("/infoGeneral", function(req, res, next) {
+    app.post("/generalInformation", function(req, res, next) {
         if(!req.session.type) {
 			res.redirect("/");
 		}else{
@@ -96,7 +96,7 @@ module.exports = function(app, urlApi, urlLocal, utils){
 
 
     
-    app.post("/modifierMdp", function (req, res, next) {
+    app.post("/updatePassword", function (req, res, next) {
         if(!req.session.type) {
 			res.redirect("/");
 		}else{
