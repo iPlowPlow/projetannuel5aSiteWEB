@@ -95,85 +95,99 @@
             }
     </script>
 </head>
-<body>
-<% include ./partials/navbar %>
-<div class="container">
-    <div class="col-sm-6 col-sm-offset-3 ">
-        <h1><center><span class="fa fa-cutlery"></span> Créez votre annonce !</center></h1>
-
-        <!-- show any messages that come back when validating -->
-        <% if (msgError.length > 0) { %>
-        <div class="alert alert-danger"><%= msgError %></div>
-        <% } %>
-        <% if (msgSuccess.length > 0) { %>
-        <div class="alert alert-success"><%= msgSuccess %></div>
-        <% } %>
-
-        <%if (typeof categories !== 'undefined' && typeof units !== 'undefined') { %>
-        <!-- LOGIN FORM -->
-        <form action="/item/new" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Catégorie</label>
-                <select class="form-control" id="category" name="category">
-                <% categories.forEach(function (item) { %>
-                  <option value=<%= item.id%>><%= item.name%></option> 
-                <% }) %>
-                </select>
+<body class="cms-index-index cms-home-page">
+    <div id="page"> 
+        <!-- Header -->
+    <header>
+        <% include ./partials/topBar %>
+    </header>
+    <section class="main-container top-space col1-layout">
+        <div class="main container">
+            <div class="account-login">
+            <div class="page-title">
+                <h2>Devenir producteur : </h2>
             </div>
-            <div class="form-group">
-                <label>Produit</label>
-                <select name="product" id="product" class="form-control" >
-                </select>
+            <fieldset class="col2-set">
+                <div class="col-1 update-users">
+                <div class="content">
+                    <% if (msgError.length > 0) { %>
+                        <div class="alert alert-danger"><%= msgError %></div>
+                    <% } %>
+                    <% if (msgSuccess.length > 0) { %>
+                        <div class="alert alert-success"> <%= msgSuccess %> </div>
+                    <% } %>
+                    <form action="/item/new" method="post" enctype="multipart/form-data">
+                        <ul class="form-list">
+                            <li>
+                                <label for="category">Catégorie</label>
+                                <br>
+                                <select class="form-control" id="category" name="category">
+                                    <% categories.forEach(function (item) { %>
+                                      <option value=<%= item.id%>><%= item.name%></option> 
+                                    <% }) %>
+                                </select> 
+                            </li>
+                            <li>
+                                <label for="product">Produit</label>
+                                <br>
+                                <select name="product" id="product" class="form-control" >
+                                </select> 
+                            </li>
+                            <li>
+                                <label for="name">Nom</label>
+                                <br>
+                                <input type="text" title="name" class="input-text required-entry" id="name"  name="name" required>
+                            </li>
+                            <li>
+                                <label for="description">Description</label>
+                                <br>
+                                <textarea rows="5" cols="50" title="description" id="description" class="input-text required-entry" name="description" required></textarea>
+                            </li>
+                            <li>
+                                <label for="address">Adresse</label>
+                                <br>
+                                <input type="text" class="input-text required-entry" id="adress" name="adress">
+                                </br>
+                                <div id="map" class="form-control"style="height:500px;"></div>
+                                <input type="hidden" class="form-control" id="location" name="location">
+                                <input type="hidden" class="form-control" id="city" name="city"/>
+                            </li>
+                            <li>
+                                <label for="photo">Photos (Max 3)</label>
+                                <div>
+                                    <img src="/img/picture.png" / id="exampleImg0" style="max-width: 150px;">
+                                    <img src="/img/picture.png" / id="exampleImg1" style="max-width: 150px;">
+                                    <img src="/img/picture.png" / id="exampleImg2" style="max-width: 150px;">
+                                </div></br>
+                                <input type="file" required name="photo" id="filePhoto" multiple accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|images/*" />
+                                <button type="button" onClick="clearImages(false);">Reinitialiser les images</button>
+                            </li>
+                            <li>
+                                <label>Prix (€)</label>
+                                <input type='number'class="input-text required-entry" name="price" step='0.01' placeholder='0.00' />
+                            </li>
+                            <li>
+                                <label>Quantité disponible</label>
+                                <input type='number' class="input-text required-entry" name="quantity" step='1' placeholder='0' />
+                            </li>
+                            <li>
+                                <label>Unité</label>
+                                <select name="unit">
+                                <% units.forEach(function (item) { %>
+                                <option value=<%= item.id%>><%= item.name%></option> 
+                                <% }) %>
+                                </select>
+                            </li>
+                        </ul>
+                        <button type="submit" class="btn btn-lg">Créer</button>   
+                    </form>
+                </div>
+                </div>
+            </fieldset>
             </div>
-            <div class="form-group">
-                <label>Nom</label>
-                <input type="text" class="form-control" name="name">
-            </div>
-            <div class="form-group">
-                <label>Description</label>
-                <textarea class="form-control" name="description"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Adresse</label>
-                <input type="text" class="form-control" id="adress" name="adress">
-                </br>
-                <div id="map" class="form-control"style="height:500px;"></div>
-                <input type="hidden" class="form-control" id="location" name="location">
-                <input type="hidden" class="form-control" id="city" name="city"/>
-            </div>
-            <div class="form-group">
-                <label>Photos (Max 3)</label>
-                <div>
-                    <img src="/img/picture.png" / id="exampleImg0" style="max-width: 150px;">
-                    <img src="/img/picture.png" / id="exampleImg1" style="max-width: 150px;">
-                    <img src="/img/picture.png" / id="exampleImg2" style="max-width: 150px;">
-                </div></br>
-                <input type="file" required name="photo" id="filePhoto" multiple accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|images/*" />
-                <button type="button" onClick="clearImages(false);">Reinitialiser les images</button>
-            </div>
-            <div class="form-group">
-                <label>Prix (€)</label>
-                <input type='number' class="form-control" name="price" step='0.01' value='0.00' placeholder='0.00' />
-            </div>
-            <div class="form-group">
-                <label>Quantité disponible</label>
-                <input type='number' class="form-control" name="quantity" step='1' value='0' placeholder='0' />
-            </div>
-            <div class="form-group">
-                <label>Unité</label>
-                <select class="form-control" name="unit">
-                <% units.forEach(function (item) { %>
-                  <option value=<%= item.id%>><%= item.name%></option> 
-                <% }) %>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-lg">Créer</button>
-        </form>
-        <% } %>
-    </div>
-</div>
-
+        </div>
+    </section>
 <% include ./partials/footer %>
-
+    </div>
 </body>
 </html>
