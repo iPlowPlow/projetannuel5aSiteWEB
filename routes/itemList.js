@@ -49,15 +49,18 @@ module.exports = function(app, urlApi, utils){
               products.push({id:body.list[item].productId, name:body.list[item].productName, idCat:body.list[item].categId, nameCat:body.list[item].categoryName});
             }
             listTab += "<tr>"
-              +"<td><a href='/visualisationAnnonce/"+body.list[item].id+"'><img src='http://localhost:8888/itemPhotos/"+body.list[item].id+"/0."+body.list[item].fileExtensions.split(';')[0]+"' width='150' height='150'></a></td>"
+              +"<td><a href='/visualisationAnnonce/"+body.list[item].id+"'><img src='"+urlApi+"/itemPhotos/"+body.list[item].id+"/0."+body.list[item].fileExtensions.split(';')[0]+"' width='150' height='150'></a></td>"
               +"<td style='text-align:center;vertical-align:middle'><a href='/visualisationAnnonce/"+body.list[item].id+"'><h3>"+body.list[item].itemName+"</h3></a></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].description+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].productName+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].producerFirstName+" "+body.list[item].producerName+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].city+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].quantity+" "+ body.list[item].unitName+"s disponibles</h5></td>"
-              +"<td style='text-align:center;vertical-align:middle'><h3>"+body.list[item].price+"€/"+body.list[item].unitName+"</h3></td>"
-            +"</tr>"
+              +"<td style='text-align:center;vertical-align:middle'><h3>"+body.list[item].price+"€/"+body.list[item].unitName+"</h3></td>";
+            if(body.list[item].login == req.session.login){
+              listTab +="<td style='text-align:center;vertical-align:middle'><a href='/item/edit/"+body.list[item].id+"'><h3><button class='btn btn-primary'>Modifier</button></h3></a></td>";
+            }
+            listTab +="</tr>";
           }
           res.render('itemList.ejs', { msgError: "", categories: categories, products: products, producers: producers, cities: cities, listTab: listTab, prixMin: prixMin, prixMax: prixMax, session : req.session });
         } else {
@@ -106,15 +109,18 @@ module.exports = function(app, urlApi, utils){
         if (body.code == 0) {
           for (var item in body.list) {
             listTab += "<tr>"
-              +"<td><a href='/visualisationAnnonce/"+body.list[item].id+"'><img src='http://localhost:8888/itemPhotos/"+body.list[item].id+"/0."+body.list[item].fileExtensions.split(';')[0]+"' width='150' height='150'></a></td>"
+              +"<td><a href='/visualisationAnnonce/"+body.list[item].id+"'><img src='"+urlApi+"/itemPhotos/"+body.list[item].id+"/0."+body.list[item].fileExtensions.split(';')[0]+"' width='150' height='150'></a></td>"
               +"<td style='text-align:center;vertical-align:middle'><a href='/visualisationAnnonce/"+body.list[item].id+"'><h3>"+body.list[item].itemName+"</h3></a></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].description+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].productName+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].producerFirstName+" "+body.list[item].producerName+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].city+"</h5></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].quantity+" "+ body.list[item].unitName+"s disponibles</h5></td>"
-              +"<td style='text-align:center;vertical-align:middle'><h3>"+body.list[item].price+"€/"+body.list[item].unitName+"</h3></td>"
-            +"</tr>"
+              +"<td style='text-align:center;vertical-align:middle'><h3>"+body.list[item].price+"€/"+body.list[item].unitName+"</h3></td>";
+            if(body.list[item].login == req.session.login){
+              listTab +="<td style='text-align:center;vertical-align:middle'><a href='/item/edit/"+body.list[item].id+"'><h3><button class='btn btn-primary'>Modifier</button></h3></a></td>";
+            }
+            listTab +="</tr>";
           }
           res.send({ msgError: "", listTab: listTab});
         } else {
