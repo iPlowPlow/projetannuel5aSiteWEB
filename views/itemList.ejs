@@ -4,6 +4,7 @@
 <head>
     <title>Liste annonces</title>
     <% include ./partials/header %>
+    
     <link rel="stylesheet" href="/css/slider.css">
     <script src="/js/bootstrap-slider.js"></script>
     <script type="text/javascript">
@@ -56,100 +57,166 @@
         }
       }
     </script>
+
+
 </head>
-<body>
-<% include ./partials/navbar %>
-<div class="container">
-  <div class="col-sm-12 col-sm-offset-0 ">
-    <h1>
-      <center><span class="	fa fa-eye"></span> Liste des annonces</center>
-    </h1>
-    <% if (msgError.length > 0) { %>
-    <div class="alert alert-danger">
-      <%= msgError %>
-    </div>
-    <% } else { %>
-    <div class="panel-group" id="accordion">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#filter">
-        Filtrer</a>
-      </h4>
-    </div>
-    <div id="filter" class="panel-collapse collapse in">
-      <div class="panel-body">
-        <div class="form-group">
-          <div class="col-sm-3 col-sm-offset-0 ">
-            <label>Catégorie</label>
-              <select class="form-control" id="category" name="category">
-                <option value=0><b>Pas de filtrage</b></option> 
-                <% categories.forEach(function (item) { %>
-                <option value=<%= item.id%>><%= item.name%></option> 
-                <% }) %>
-              </select>
-            <label>Produit</label>
-              <select name="product" id="product" class="form-control" >
-                <option value=0><b>Pas de filtrage</b></option> 
-              </select>
-          </div>
-          <div class="col-sm-3 col-sm-offset-1 ">
-            <label>Ville</label>
-              <select class="form-control" id="cities" name="cities">
-                <option value=0><b>Pas de filtrage</b></option> 
-                <% cities.forEach(function (item) { %>
-                <option value=<%= item %>><%= item %></option> 
-                <% }) %>
-              </select>
-            <label>Producteurs</label>
-              <select class="form-control" id="producers" name="producers">
-                <option value=0><b>Pas de filtrage</b></option> 
-                <% producers.forEach(function (item) { %>
-                <option value=<%= item.id%>><%= item.name%></option> 
-                <% }) %>
-              </select>              
-              <hr>
-              <center><button class="btn btn-primary" onClick="filter();" style="width:100%">Filtrer</button></center>
-          </div>
-          <div class="col-sm-3 col-sm-offset-1 ">
-              <label>Prix</label><br/>
-              <input id="price" type="text" class="span2" value="" data-slider-min=<%= prixMin %> data-slider-max=<%= prixMax %> data-slider-step="1" data-slider-value="[<%= prixMax*0.25 %>,<%= prixMax*0.75 %>]"/>
-              <label>Minimum restant</label><br/>
-              <input id="quantity" type="text" class="span2" value="" data-slider-min=1 data-slider-max=100 data-slider-step="1" data-slider-value="10"/>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#listItems">
-        Liste items</a>
-      </h4>
-    </div>
-    <div id="listItems" class="panel-collapse collapse">
-      <div class="panel-body">
-        <div class="table-responsive">
-          <table id="tabdata" name="tabdata" class="table">
-            <thead>
-              <tr>
-              </tr>
-             </thead>
-              <tbody>
-                <%- listTab %>
-              </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-  <% } %>
-  </div>
-</div>
+<body class="cms-index-index cms-home-page">
+  <div id="page"> 
+      <!-- Header -->
+      <header>
+          <% include ./partials/topBar %>
+          <% include ./partials/navbar %>
+      </header>
 
+<br>
+      <section class="main-container col2-left-layout bounceInUp animated">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-9 col-sm-push-3">
+           
+              
+      <article class="col-main">
+        <h2 class="page-heading"> <span class="page-heading-title">Les Produits</span> </h2>
+        <div class="display-product-option">
+          <div class="pager hidden-xs">
+            <div class="pages">
+              <ul class="pagination">
+                  <% if(currentPage != 1){ %>
+                  <li><a href="/itemList/<%=(currentPage-1)%>">&laquo;</a></li>
+                  <% } %>
+                <% var pagination = 1; 
+                if(listTab.length>0) {
+                for (var j = 1; j<=nbItems; j = j+20){ %>
+                  <% if(currentPage == pagination) { %>
+                    <li class="active"><a href="/itemList/<%=pagination%>"><%=pagination%></a></li>
+                  <% }else{ %>
+                    <li><a href="/itemList/<%=pagination%>"><%=pagination%></a></li>
+                  <% } %>
+                  
+                <% pagination++; } } 
+                var nextPage =  (currentPage*1+1*1)%>
+                <% if(currentPage != pagination-1){ %>
+                  <li><a href="/itemList/<%=nextPage%>">&raquo;</a></li>
+                <% } %>
+                
+              </ul>
+            </div>
+          </div>
+          <div class="sorter">
+            <div class="view-mode"> <span title="Grid" class="button button-active button-grid">&nbsp;</span><a href="list.html" title="List" class="button-list">&nbsp;</a> </div>
+          </div>
+        </div>
+
+
+        <div class="category-products">
+          <ul class="products-grid">
+            <% if(listTab.length>0) { 
+             
+              for (var i =0; i<listTab.length; i++){ %>
+                  <%var desc = listTab[i].description.replace("\r\n", "<br />") %>
+                   
+              <script type="text/javascript">
+                  
+                 
+                
+              </script>
+
+              <li class="item col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                <div class="item-inner">
+                  <div class="item-img">
+                    <div class="item-img-info"><a href="/visualisationAnnonce/<%=listTab[i].id%>" title="Retis lapen casen" class="product-image"><img style="height: 200px; max-width: 200px;" src="<%=urlApi%>/itemPhotos/<%=listTab[i].id%>/0.<%=listTab[i].fileExtensions.split(';')[0]%>" alt="<%=listTab[i].productName%>"></a>
+                      <!--<div class="new-label new-top-left">New</div>-->
+                      <div class="box-hover">
+                        <ul class="add-to-links">
+                          <li><a class="link-quickview" onclick="displayQuickView('<%=listTab[i].productName%>','<%=listTab[i].price%>','<%=listTab[i].quantity%>','<%=listTab[i].unitName%>', '<%=desc%>', '<%=listTab[i].id%>', '<%=listTab[i].fileExtensions%>', '<%=urlApi%>' );">Voir plus</a> </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item-info">
+                    <div class="info-inner">
+                      <div class="item-title"> <a title="Retis lapen casen" href="/visualisationAnnonce/<%=listTab[i].id%>"><%=listTab[i].productName%> <%=listTab[i].photo%> </a> </div>
+                      <div class="item-content">
+                        <div class="rating">
+                          <div class="ratings">
+                            <!--<div class="rating-box">
+                              <div style="width:80%" class="rating"></div>
+                            </div>
+                            <!--<p class="rating-links"> <a href="#">1 Review(s)</a> <span class="separator">|</span> <a href="#">Add Review</a> </p>-->
+                          <!--</div>-->
+                        </div>
+                        <div class="item-price">
+                          <div class="price-box">
+                            <!--<p class="old-price"><span class="price-label">Regular Price:</span> <span class="price">$100.00 </span> </p>-->
+                            <p class="special-price"><span class="price-label">Special Price</span> <span class="price"><%= listTab[i].price%> € </span> </p>
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            <% } } %>
+          </ul>
+        </div>
+        <div class="toolbar">
+          <div class="row">
+            <div class="col-lg-3 col-md-4">
+              <!--<div id="sort-by">
+                <label class="left">Sort By: </label>
+                <ul>
+                  <li><a href="#">Position<span class="right-arrow"></span></a>
+                    <ul>
+                      <li><a href="#">Name</a></li>
+                      <li><a href="#">Price</a></li>
+                      <li><a href="#">Position</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>-->
+            </div>
+            <div class="col-lg-6 col-sm-7 col-md-5">
+              <div class="pager">
+                <div class="pages">
+                  <label>Page:</label>
+                  <ul class="pagination">
+                      <% if(currentPage != 1){ %>
+                      <li><a href="/itemList/<%=(currentPage-1)%>">&laquo;</a></li>
+                      <% } %>
+                    <% var pagination = 1; 
+                    if(listTab.length>0) {
+                    for (var j = 1; j<=nbItems; j = j+20){ %>
+                      <% if(currentPage == pagination) { %>
+                        <li class="active"><a href="/itemList/<%=pagination%>"><%=pagination%></a></li>
+                      <% }else{ %>
+                        <li><a href="/itemList/<%=pagination%>"><%=pagination%></a></li>
+                      <% } %>
+                      
+                    <% pagination++; } } 
+                    var nextPage =  (currentPage*1+1*1)%>
+                    <% if(currentPage != pagination-1){ %>
+                      <li><a href="/itemList/<%=nextPage%>">&raquo;</a></li>
+                    <% } %>
+                    
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-12 col-md-3">
+              <div id="limiter">
+                
+                <a class="button-asc left" href="#" title="Set Descending Direction"><span class="top_arrow"></span></a> </div>
+            </div>
+          </div>
+        </div>
+      </article>  
+
+            </div>
+          </div></div></section>
+
+  </div>
 <% include ./partials/footer %>
-
+<% include ./partials/quickView %>
 </body>
 </html>

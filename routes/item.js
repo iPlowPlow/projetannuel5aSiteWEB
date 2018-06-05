@@ -155,7 +155,7 @@ module.exports = function(app, urlApi, utils){
           var extensionT = files.photo[photo].name.split('.');
           var extension = extensionT[extensionT.length - 1];
           if (files.photo[photo].size > 5242880 || (extension != "jpg" && extension != "png" && extension != "jpeg" && extension != "gif" && extension != "bmp" && extension != "tif" && extension != "tiff")) {
-            msgError += "L'un des fichiers utilisés pour les photos n'est pas conforme : <br>Extensions acceptées :  \n\rPoid maximum : 5242880  ";
+            msgError += "L'un des fichiers utilisés pour les photos n'est pas conforme : \nExtensions acceptées :  \n\rPoid maximum : 5242880  ";
           }
         }
         if(!fields.name){
@@ -243,7 +243,7 @@ module.exports = function(app, urlApi, utils){
           var extensionT = files.photo[photo].name.split('.');
           var extension = extensionT[extensionT.length - 1];
           if (files.photo[photo].size > 5242880 || (extension != "jpg" && extension != "png" && extension != "jpeg" && extension != "gif" && extension != "bmp" && extension != "tif" && extension != "tiff")) {
-            msgError += "L'un des fichiers utilisés pour les photos n'est pas conforme : <br>Extensions acceptées :  \n\rPoid maximum : 5242880  ";
+            msgError += "L'un des fichiers utilisés pour les photos n'est pas conforme : \nExtensions acceptées :  \n\rPoid maximum : 5Mo  ";
           }
         }
       item= {

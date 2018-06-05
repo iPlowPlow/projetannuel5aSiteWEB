@@ -7,7 +7,7 @@ module.exports = function(app, urlApi, utils){
 	// =====================================
 	// show the signup form
 	
-	app.get('/itemList', function(req, res, next) {
+	app.get('/itemList/:page', function(req, res, next) {
     var msgError = "";
     var categories= [];
     var products = [];
@@ -16,7 +16,8 @@ module.exports = function(app, urlApi, utils){
     var listTab = "";
     var prixMax=0.0;
     var prixMin=Number.MAX_SAFE_INTEGER+0.1;
-    if(req.session.type){
+    var limit = (req.params.page -1)*20
+
       rp({
         uri: urlApi + "/item/filter",
         method: "GET",
@@ -25,9 +26,10 @@ module.exports = function(app, urlApi, utils){
           'User-Agent': 'Request-Promise'
         },
         qs: {
-          limit: '150'
+          limit: limit
         }
       }).then(function (body) {
+        
         if (body.code == 0) {
           for (var item in body.list) {
             if(prixMax < body.list[item].price){
@@ -48,7 +50,11 @@ module.exports = function(app, urlApi, utils){
             if(products.filter(products => (products.id === body.list[item].productId)).length===0){
               products.push({id:body.list[item].productId, name:body.list[item].productName, idCat:body.list[item].categId, nameCat:body.list[item].categoryName});
             }
-            listTab += "<tr>"
+
+           
+            
+            
+           /* listTab += "<tr>"
               +"<td><a href='/visualisationAnnonce/"+body.list[item].id+"'><img src='"+urlApi+"/itemPhotos/"+body.list[item].id+"/0."+body.list[item].fileExtensions.split(';')[0]+"' width='150' height='150'></a></td>"
               +"<td style='text-align:center;vertical-align:middle'><a href='/visualisationAnnonce/"+body.list[item].id+"'><h3>"+body.list[item].itemName+"</h3></a></td>"
               +"<td style='text-align:center;vertical-align:middle'><h5>"+body.list[item].description+"</h5></td>"
@@ -60,16 +66,14 @@ module.exports = function(app, urlApi, utils){
             if(body.list[item].login == req.session.login){
               listTab +="<td style='text-align:center;vertical-align:middle'><a href='/item/edit/"+body.list[item].id+"'><h3><button class='btn btn-primary'>Modifier</button></h3></a></td>";
             }
-            listTab +="</tr>";
+            listTab +="</tr>";*/
           }
-          res.render('itemList.ejs', { msgError: "", categories: categories, products: products, producers: producers, cities: cities, listTab: listTab, prixMin: prixMin, prixMax: prixMax, session : req.session });
+          res.render('itemList.ejs', { msgError: "", urlApi: urlApi, categories: categories, products: products, producers: producers, cities: cities, listTab: body.list, prixMin: prixMin, prixMax: prixMax, session : req.session, currentPage: req.params.page, nbItems : body.nbTotalItem });
         } else {
-          res.render("itemList.ejs", { msgError: body.message, session: req.session });
+          res.render("itemList.ejs", { msgError: body.message, urlApi: urlApi, categories: null, products: null, producers: null, cities: null, listTab: null, prixMin: null, prixMax: null, session: req.session,currentPage: req.params.page });
         }
       });
-    }else{
-			res.redirect("/");
-		}
+   
   });
 
   app.get('/itemList/filter', function(req, res, next) {
@@ -87,7 +91,7 @@ module.exports = function(app, urlApi, utils){
     if(req.query.producerId==0){
       req.query.producerId = null;
     }
-    if(req.session.type){
+    
       rp({
         uri: urlApi + "/item/filter",
         method: "GET",
@@ -107,7 +111,7 @@ module.exports = function(app, urlApi, utils){
         }
       }).then(function (body) {
         if (body.code == 0) {
-          for (var item in body.list) {
+          /*for (var item in body.list) {
             listTab += "<tr>"
               +"<td><a href='/visualisationAnnonce/"+body.list[item].id+"'><img src='"+urlApi+"/itemPhotos/"+body.list[item].id+"/0."+body.list[item].fileExtensions.split(';')[0]+"' width='150' height='150'></a></td>"
               +"<td style='text-align:center;vertical-align:middle'><a href='/visualisationAnnonce/"+body.list[item].id+"'><h3>"+body.list[item].itemName+"</h3></a></td>"
@@ -121,14 +125,12 @@ module.exports = function(app, urlApi, utils){
               listTab +="<td style='text-align:center;vertical-align:middle'><a href='/item/edit/"+body.list[item].id+"'><h3><button class='btn btn-primary'>Modifier</button></h3></a></td>";
             }
             listTab +="</tr>";
-          }
-          res.send({ msgError: "", listTab: listTab});
+          }*/
+          res.send({ msgError: "", listItem:  body.list, urlApi: urlApi});
         } else {
           res.send({ msgError: "erreur lors de la requête AJAX"});
         }
       });
-    }else{
-			res.send({ msgError: "erreur lors de la requête AJAX"});
-		}
+    
   });
 };

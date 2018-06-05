@@ -37,7 +37,7 @@ module.exports = function(app, urlApi, utils){
                     res.render("becomeProducer.ejs", {
                         session: req.session,
                         producer: localProducer,
-                        msgError:"Le fichier utilisé pour la photo n'est pas confomre : <br>Extensions acceptées :  \n\rPoid maximum : 5242880  ",
+                        msgError:"Le fichier utilisé pour la photo n'est pas confomre : \nExtensions acceptées :  \n\rPoid maximum : 5Mo  ",
                         msgSuccess: ""
                     });
                 }else if(!fields.lastName) {
@@ -134,7 +134,7 @@ module.exports = function(app, urlApi, utils){
                         }
                     }).then(function(body) {   
                         if(body.code == 0){
-                            req.session.type="producer";
+                            req.session.type=1;
                             res.render("ficheProducer.ejs", {
                                 session: req.session,
                                 producer: localProducer,
